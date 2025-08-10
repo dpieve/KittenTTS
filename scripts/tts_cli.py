@@ -20,15 +20,24 @@ def parse_args():
 def main():
     args = parse_args()
 
+    # Resolve output path: relative paths are written under /data
+    output_arg = args.output
+    if not os.path.isabs(output_arg):
+        # Normalize and strip leading ./ or .\\ from user input
+        normalized = output_arg.lstrip("./\\")
+        output_path = os.path.join("/data", normalized)
+    else:
+        output_path = output_arg
+
     # Ensure output directory exists
-    os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
+    os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
 
     # Initialize model (will download from HF on first run)
     model = KittenTTS(model_name=args.repo, cache_dir=args.cache_dir)
 
     # Synthesize and save file
-    model.generate_to_file(args.text, args.output, voice=args.voice, speed=args.speed, sample_rate=24000)
-    print(f"Saved: {args.output}")
+    model.generate_to_file(args.text, output_path, voice=args.voice, speed=args.speed, sample_rate=24000)
+    print(f"Saved: {output_path}")
 
 
 if __name__ == "__main__":

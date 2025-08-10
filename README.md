@@ -72,12 +72,12 @@ With docker compose:
 
 ```
 docker compose run --rm kittentts \
-  -t "Hello from Docker" -o /data/hello.wav --voice expr-voice-2-m
+  -t "Hello from Docker" -o hello.wav --voice expr-voice-2-m
 ```
 
 Notes:
 - The first run downloads model files into the mounted cache at `./.cache`.
-- Outputs are written to the mounted `./data` directory.
+- If you pass a relative output path, it will be written under `/data` (e.g., `-o hello.wav` -> `/data/hello.wav`). Absolute paths must be writable inside the container.
 
 
 
