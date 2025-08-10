@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  kittentts:
+    build: .
+    image: kittenml/kittentts:local
+    volumes:
+      - ./data:/data
+      - ./.cache:/cache
+    command: ["--help"]

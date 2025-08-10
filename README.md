@@ -42,6 +42,43 @@ sf.write('output.wav', audio, 24000)
 
 ```
 
+### Docker (no local Python dependencies)
+
+Build the image:
+
+```
+docker build -t kittenml/kittentts:local .
+```
+
+Or using compose (also creates a shared `./data` folder):
+
+```
+docker compose build
+```
+
+Synthesize speech (output to `./data/out.wav`):
+
+```
+docker run --rm \
+  -v $(pwd)/data:/data \
+  -v $(pwd)/.cache:/cache \
+  kittenml/kittentts:local \
+  -t "This high quality TTS model works without a GPU" \
+  -o /data/out.wav \
+  --voice expr-voice-5-f
+```
+
+With docker compose:
+
+```
+docker compose run --rm kittentts \
+  -t "Hello from Docker" -o /data/hello.wav --voice expr-voice-2-m
+```
+
+Notes:
+- The first run downloads model files into the mounted cache at `./.cache`.
+- Outputs are written to the mounted `./data` directory.
+
 
 
 
