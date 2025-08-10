@@ -50,10 +50,10 @@ Build the image:
 docker build -t kittenml/kittentts:local .
 ```
 
-Or using compose (also creates a shared `./data` folder):
+Or using compose:
 
 ```
-docker compose build
+docker compose build kittentts
 ```
 
 Synthesize speech (output to `./data/out.wav`):
@@ -71,8 +71,7 @@ docker run --rm \
 With docker compose:
 
 ```
-docker compose run --rm kittentts \
-  -t "Hello from Docker" -o hello.wav --voice expr-voice-2-m
+docker compose run --rm kittentts -t "This is a high quality TTS model works without a GPU." -o hello.wav --voice expr-voice-5-m
 ```
 
 List available voices in the pulled model:
