@@ -22,12 +22,16 @@ WORKDIR /app
 
 # Copy metadata to leverage Docker layer caching
 COPY requirements.txt pyproject.toml setup.py README.md ./
+
+# Pre-build dependency wheels to maximize cache reuse across code changes
+RUN pip install --upgrade pip \
+    && pip wheel --wheel-dir /wheels -r requirements.txt
+
+# Copy source only after deps are cached to avoid invalidating dep layer
 COPY kittentts ./kittentts
 
-# Install project in a wheel to avoid editable installs
-RUN pip install --upgrade pip \
-    && pip wheel --no-deps --wheel-dir /wheels . \
-    && pip wheel --wheel-dir /wheels -r requirements.txt
+# Build project wheel
+RUN pip wheel --no-deps --wheel-dir /wheels .
 
 # 3) Final runtime image
 FROM base AS runtime

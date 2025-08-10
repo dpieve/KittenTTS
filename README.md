@@ -85,6 +85,24 @@ Notes:
 - The first run downloads model files into the mounted cache at `./.cache`.
 - If you pass a relative output path, it will be written under `/data` (e.g., `-o hello.wav` -> `/data/hello.wav`). Absolute paths must be writable inside the container.
 
+#### Faster inner-loop for development
+
+If you are iterating on source code and want to avoid `docker compose build` for every change, use the dev service which runs from source mounted into the container:
+
+```
+docker compose run --rm kittentts-dev \
+  python scripts/tts_cli.py --list-voices
+```
+
+Or synthesize directly:
+
+```
+docker compose run --rm kittentts-dev \
+  python scripts/tts_cli.py -t "Hello" -o hello.wav --voice expr-voice-2-m
+```
+
+This installs dependencies inside a disposable container and runs your local code via `PYTHONPATH`, so code-only edits are picked up immediately without a rebuild. Use the production image (`kittentts`) when you need reproducible builds or to distribute the container.
+
 
 
 
