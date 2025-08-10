@@ -53,11 +53,18 @@ class KittenTTS_1_Onnx:
         )
         self.text_cleaner = TextCleaner()
         
-        # Available voices
-        self.available_voices = [
-            'expr-voice-2-m', 'expr-voice-2-f', 'expr-voice-3-m', 'expr-voice-3-f', 
-            'expr-voice-4-m', 'expr-voice-4-f', 'expr-voice-5-m', 'expr-voice-5-f'
-        ]
+        # Available voices (derived from voices file if possible)
+        try:
+            if hasattr(self.voices, 'files') and self.voices.files:
+                self.available_voices = sorted(self.voices.files)
+            else:
+                raise AttributeError
+        except Exception:
+            # Fallback list (legacy)
+            self.available_voices = [
+                'expr-voice-2-m', 'expr-voice-2-f', 'expr-voice-3-m', 'expr-voice-3-f',
+                'expr-voice-4-m', 'expr-voice-4-f', 'expr-voice-5-m', 'expr-voice-5-f'
+            ]
     
     def _prepare_inputs(self, text: str, voice: str, speed: float = 1.0) -> dict:
         """Prepare ONNX model inputs from text and voice parameters."""

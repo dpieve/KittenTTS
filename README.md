@@ -75,6 +75,12 @@ docker compose run --rm kittentts \
   -t "Hello from Docker" -o hello.wav --voice expr-voice-2-m
 ```
 
+List available voices in the pulled model:
+
+```
+docker compose run --rm kittentts --list-voices
+```
+
 Notes:
 - The first run downloads model files into the mounted cache at `./.cache`.
 - If you pass a relative output path, it will be written under `/data` (e.g., `-o hello.wav` -> `/data/hello.wav`). Absolute paths must be writable inside the container.
